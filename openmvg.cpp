@@ -323,7 +323,13 @@ InputData inputDataFromOpenMVG(const std::string &projectRoot){
         fs::path thisRoot(image_root_path);
         fs::path image_path =  thisRoot/ v.s_Img_path;
 
-        std::uint32_t current_pose = pose_indexes.at(v.id_pose);
+        auto search = pose_indexes.find(v.id_pose);
+        if (search == pose_indexes.end()) {
+            continue;
+        }
+        std::uint32_t current_pose = search->second;
+        
+
 
         float normalizer = static_cast<float>((std::max)(intrinsic.width, intrinsic.height));
         ret.cameras.emplace_back(Camera(intrinsic.width, intrinsic.height, 
